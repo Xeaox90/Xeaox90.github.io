@@ -16,8 +16,7 @@ function setup() {
     line(370, 260, 430, 260);
     line(290, 260, 200, 250);
     line(510, 260, 600, 250);
-    //curve();
-    //curve();
+
     
     fill("white");
     strokeWeight(1);
