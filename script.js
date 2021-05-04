@@ -101,7 +101,7 @@ function draw() {   //the field moving
     fill("#fff")
     textSize(50)
     text('SPACEBAR TO READY AND THEN HIKE')
-    textSize(200)
+    textSize(150)
   }
 }
 
