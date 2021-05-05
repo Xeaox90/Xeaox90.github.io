@@ -63,6 +63,7 @@ function setup(){
     fill("#fff")
     textSize(50)
     text('SPACEBAR TO READY AND THEN HIKE',10,200)
+    text('ARROWS TO MOVE',10,250)
     textSize(150)
 }
 
@@ -101,6 +102,7 @@ function draw() {   //the field moving
     fill("#fff")
     textSize(50)
     text('SPACEBAR TO READY AND THEN HIKE')
+    text('ARROWS TO MOVE',10,250)
     textSize(150)
   }
 }
