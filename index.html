@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.min.js"></script>    
+    <style>
+        .gameCirc{
+            r: 20px;
+            fill: #000;
+        }
+    </style>
 </head>
 <body>
-    <a href="instruments.html">Instruments</a>
-    <a href="svg.html">SVG Game</a>
+    <svg id="gameZone" width=600 height=600>
+        <rect id="foundBar" y=585 x=0 id="foundBar" height=15 width=1></rect>
+    </svg>
+
+    <script src="SVG.js"></script>
 </body>
 </html>
