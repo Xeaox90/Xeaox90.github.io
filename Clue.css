@@ -1,0 +1,98 @@
+/*BLINKING READY
+STATE
+WOULD BE 
+A GOOD 
+ANIMATION*/
+
+
+body{
+    color: white;
+    background-color: black;
+}
+
+svg{
+    background-image: url(clueBoard.jpg);
+    background-repeat: no-repeat;
+    position: absolute;
+}
+
+#rollClick{
+    z-index: 2;
+    position: absolute;
+    width: 15%;
+    left: 40%;
+    top: 75%;
+}
+
+button{
+    z-index: 2;
+    position: relative;
+}
+
+#userInterface{
+    background-color: grey;
+    position: absolute;
+    z-index: 1;
+    left: 360px;
+    width: 720px;
+    top: 360px;
+    text-align: center;
+}
+div > button{
+    position: relative;
+    background-color: turquoise;
+    color: teal;
+}
+
+li{ 
+    list-style-type: none;
+}
+
+input{
+    width: max-content;
+    text-align: center;
+}
+
+.player{
+    r: 1.5%;
+    z-index: 1;
+}
+.current{
+    fill: black;
+    animation: .5s linear infinite alternate char_pulse;
+}
+@keyframes char_pulse{
+    to{
+        opacity: 0%;
+    }
+}
+
+.space{
+    fill: none;
+    width: 30px;
+    height: 30px;
+    z-index: 0;
+}
+
+.path{
+    fill: black;
+}
+
+.MrsPeacock{
+    fill: rgb(0, 124, 196);
+}
+.ProfPlum{
+    fill: purple;
+}
+.RevGreen{
+    fill: green;
+}
+.MsScarlet{
+    fill: rgb(182, 0, 15);
+}
+.MrsWhite{
+    fill: white;
+}
+.ColMustard{
+    fill: rgb(119, 96, 54);
+}

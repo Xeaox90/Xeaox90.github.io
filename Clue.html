@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clue Digital Board Game</title>
+    <link rel="stylesheet" href="Clue.css">
+</head>
+<body onload="characterSelector()">
+    <svg id="gameBoard" width=1440 height=1440>
+    </svg>
+    
+    <div id="userInterface">
+        <button onclick="runClue();document.getElementById('userInterface').remove()">Click Here to Start</button>
+        <input id="characterSelector" type="text" placeholder="Which players would you like to play?" onclick="characterDisplay()" onkeyup="characterUpdate()"></input>
+        <ul id="characterList">
+        </ul>
+    </div>
+
+    <button id="rollClick">Click me to Roll</button>
+    
+    
+    <script src="Clue.js" ></script>
+
+    <audio id="sound" controls preload="auto" loop title="CHECK YOUR VOLUME">
+        <source src="Cumulus.mp3" type="audio/mpeg">
+    </audio>
+    CHECK YOUR VOLUME
+</body>
+</html>
