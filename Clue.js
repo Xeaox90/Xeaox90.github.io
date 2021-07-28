@@ -1,9 +1,3 @@
-/*import * as Clue from "./clueJava.js"
-
-Clue.run(3) THIS IS PETTY BS*/
-
-//import { run } from "./clueJava"
-
 class Dice{//only one find 3d elements in svg
     visible = false
     total = 0
