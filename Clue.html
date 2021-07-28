@@ -7,25 +7,28 @@
     <title>Clue Digital Board Game</title>
     <link rel="stylesheet" href="Clue.css">
 </head>
-<body onload="characterSelector()">
+<body>
     <svg id="gameBoard" width=1440 height=1440>
     </svg>
     
     <div id="userInterface">
-        <button onclick="runClue();document.getElementById('userInterface').remove()">Click Here to Start</button>
-        <input id="characterSelector" type="text" placeholder="Which players would you like to play?" onclick="characterDisplay()" onkeyup="characterUpdate()"></input>
-        <ul id="characterList">
+        <div id="characterSelector"  onpointerover="characterDisplay()" style="font-size: large;">Which players would you like to play?</div>
+        <ul id="characterList" style="font-size: large;">
         </ul>
+        <button onclick="runClue();">Click Here to Start</button>
     </div>
 
-    <button id="rollClick">Click me to Roll</button>
-    
+    <button id="rollClick">Click me to Roll</button>    
     
     <script src="Clue.js" ></script>
 
-    <audio id="sound" controls preload="auto" loop title="CHECK YOUR VOLUME">
-        <source src="Cumulus.mp3" type="audio/mpeg">
-    </audio>
+    <div id="partyButton" onclick="  let x = getElementById('sound');if(x.paused){x.play()}else{x.pause()};
+                    let y = getElementById('gameBoard');if(y.classList.contains('party')){y.classList.remove('party')}else{y.classList.add('party')}">
+        PARTY MODE
+        <audio id="sound" hidden controls preload="auto" loop title="CHECK YOUR VOLUME">
+            <source src="Tranceport.mp3" type="audio/mpeg">
+        </audio>
+    </div>
     CHECK YOUR VOLUME
 </body>
 </html>

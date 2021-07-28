@@ -4,10 +4,22 @@ WOULD BE
 A GOOD 
 ANIMATION*/
 
-
+#partyButton{
+    background-color: navy;
+    color: thistle;
+    position: absolute;
+    font-size: 20px;
+    z-index: 2;
+    margin: 10px;
+}
 body{
     color: white;
     background-color: black;
+}
+
+.guess{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 svg{
@@ -15,13 +27,21 @@ svg{
     background-repeat: no-repeat;
     position: absolute;
 }
+.party{
+    background-image: url(clueBoardAnimation.gif);
+}
 
 #rollClick{
-    z-index: 2;
+    background-color:floralwhite;
+    border-radius: 10px;
     position: absolute;
-    width: 15%;
-    left: 40%;
-    top: 75%;
+    z-index: 0;
+    left: 675px;
+    width: 90px;
+    height: 90px;
+    top: 540px;
+    text-align: center;
+    font-size: 25px;
 }
 
 button{
@@ -30,12 +50,12 @@ button{
 }
 
 #userInterface{
-    background-color: grey;
+    background-color: rgb(0, 0, 0);
     position: absolute;
     z-index: 1;
-    left: 360px;
-    width: 720px;
-    top: 360px;
+    left: 450px;
+    width: 540px;
+    top: 495px;
     text-align: center;
 }
 div > button{
@@ -46,6 +66,10 @@ div > button{
 
 li{ 
     list-style-type: none;
+    margin-left: -40px;
+}
+.picked{
+    background-color: grey;
 }
 
 input{
@@ -56,6 +80,7 @@ input{
 .player{
     r: 1.5%;
     z-index: 1;
+    stroke: black;
 }
 .current{
     fill: black;
@@ -80,19 +105,25 @@ input{
 
 .MrsPeacock{
     fill: rgb(0, 124, 196);
+    color: rgb(0, 124, 196);
 }
 .ProfPlum{
     fill: purple;
+    color: purple;
 }
 .RevGreen{
     fill: green;
+    color: green;
 }
 .MsScarlet{
     fill: rgb(182, 0, 15);
+    color: rgb(182, 0, 15);
 }
 .MrsWhite{
     fill: white;
+    color: white;
 }
 .ColMustard{
-    fill: rgb(119, 96, 54);
+    fill: rgb(243, 195, 106);
+    color: rgb(243, 195, 106)
 }

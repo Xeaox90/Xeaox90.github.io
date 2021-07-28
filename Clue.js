@@ -25,11 +25,6 @@ class Card{
     constructor(name){
         this.name = name
     }
-    
-    //interacts with character.draw()
-    draw(){
-
-    }
 
     show(){}
 }
@@ -83,7 +78,7 @@ class Character{
         this.marker.setAttribute("cx", 52 +this.x*53.6)
         this.marker.setAttribute("cy", 46 +this.y*51.75)
         let board = document.getElementById("gameBoard")
-        board.appendChild(this.marker)    
+        board.appendChild(this.marker)
     }
     
     move(key){
@@ -119,11 +114,13 @@ class Character{
     setChar(game){
         game.currentChar(this)
     }
+    getRoom(game){
+        this.room = game.space[this.x][this.y].room
+    }
 }
 
                 //MAIN DEPENDANT PROGRAM
 function runClue(){
-    
     let game = new Board(25,26)
     let dice = new Dice
 
@@ -142,32 +139,46 @@ function runClue(){
     let moves = -1
 
     let startSpots = [[1,6],[17,1],[24,8],[1,19],[10,25],[15,25]]
+    let weaponSpots = {Lounge:[[1,6],[17,1],[24,8],[1,19],[10,25],[15,25]],
+        DiningRoom:[[1,6],[17,1],[24,8],[1,19],[10,25],[15,25]],
+    }
+    let playerArray = []
+    playerArray = document.getElementsByClassName("picked")
+    
     //PLACES CHARACTER MARKERS AND ESTABLISHED ONCLICK TO DETERMINE WHO IS MOVING
-    for(let x=0;x<suspectList.length;x++){ //MAYBE WITH NO LET THAT'S WHY THIS WAS A SUNUFAGUN -- YEP THAT'S WHAT IT WAS
+    for(let x=0;x<playerArray.length;x++){
+        
         let rand = Math.floor(Math.random()*(6-x))
-        char[x] = new Character(startSpots[rand][0],startSpots[rand][1],suspectList[x])
-        char[x].marker.classList.add(suspectList[x].replace(" ","").replace(".",""))
+        
+        char[x] = new Character(startSpots[rand][0],startSpots[rand][1],playerArray[x].innerHTML)
+        char[x].marker.classList.add(playerArray[x].innerHTML.replace(" ","").replace(".",""))
         startSpots.splice(rand,1)
         
         char[x].draw(suspectDeck)
         char[x].draw(weaponDeck)
         char[x].draw(roomDeck)
         
-        game.space[char[x].x][char[x].y].occupied = true
-        
-        //ONCLICK FUNCTION THIS THING WAS A SON OF A GUN
-        char[x].marker.onclick = function(){
-            game.curChar = char[x]
-            console.log(char[x])
-            let selectorArray = document.getElementsByClassName("current")
-            if(selectorArray.length == 0)
-                char[x].marker.classList.add("current")
-            else{
-                selectorArray[0].classList.remove("current")
-                char[x].marker.classList.add("current")
-            }
+        game.space[char[x].x][char[x].y].occupied = true        
+    }
+    clearBoard() //LEAVE UNTIL CHARACTER SELECTION IS FINISHED
+    //ESTABLISH STARTING CHARACTERS
+
+    game.turnIndex = Math.floor(Math.random()*char.length)
+
+    for(let i=0;i<char.length;i++){
+        if(char[i].name == "Ms. Scarlet"){
+            game.curChar = char[i]
+            game.turnIndex = i
+            break
+        }
+        else{
+            game.curChar = char[game.turnIndex]
         }
     }
+    game.curChar.marker.classList.add("current")
+    alert("It is " + game.curChar.name + "'s turn.")
+    alert("Your cards are " + game.curChar.hand)
+    
     
     //MANUALLY AND PROCEDURALLY IDENTIFY SPECIAL BOARD SPACES
     {game.space[7][5].door = true
@@ -190,22 +201,34 @@ function runClue(){
     for(i=0;i<25;i++){
         for(j=0;j<26;j++){
             if((i>=1 && i<=6 && j>=7 && j<=11)
-            || (i==7 && j>=8 && j<=10)
-            || (i>=1 && i<=6 && j>=13 && j<=17)
-            || (i>=1 && i<=6 && j>=7 && j<=11)
-            || (i>=10 && i<=15 && j>=1 && j<=7)
-            || (i>=9 && i<=16 && j>=18 && j<=23)
-            || (i>=11 && i<=14 && j>=24 && j<=25)
-            || (i>=17 && i<=24 && j>=10 && j<=15)
-            || (i>=20 && i<=24 && j==16)){
-                game.space[i][j].room = true
+            || (i==7 && j>=8 && j<=10))
+                game.space[i][j].room = "Library"
+            if(i>=1 && i<=6 && j>=13 && j<=17)
+                game.space[i][j].room = "Billiard Room"
+            if(i>=10 && i<=15 && j>=1 && j<=7)
+                game.space[i][j].room = "Hall"
+            if((i>=9 && i<=16 && j>=18 && j<=23)
+            || (i>=11 && i<=14 && j>=24 && j<=25))
+                game.space[i][j].room = "Ballroom"
+            if((i>=17 && i<=24 && j>=10 && j<=15)
+            || (i>=20 && i<=24 && j==16))
+                game.space[i][j].room = "Dining Room"
+
+            if(i>=1 && i<=7 && j>=1 && j<=4){
+                game.space[i][j].room = "Study"
+                game.space[i][j].portal = true
             }
-            if((i>=1 && i<=7 && j>=1 && j<=4)
-            || (i>=18 && i<=24 && j>=1 && j<=6)
-            || (i>=1 && i<=5 && j>=20 && j<=24)
-            || (i==6 && j>=21 && j<=24)
-            || (i>=19 && i<=24 && j>=19 && j<=24)){
-                game.space[i][j].room = true
+            if(i>=18 && i<=24 && j>=1 && j<=6){
+                game.space[i][j].room = "Lounge"
+                game.space[i][j].portal = true
+            }
+            if((i>=1 && i<=5 && j>=20 && j<=24)
+            || (i==6 && j>=21 && j<=24)){
+                game.space[i][j].room = "Conservatory"
+                game.space[i][j].portal = true
+            }
+            if(i>=19 && i<=24 && j>=19 && j<=24){
+                game.space[i][j].room = "Kitchen"
                 game.space[i][j].portal = true
             }
             if((i>=10 && i<= 14 && j>=9 && j<=15)
@@ -216,24 +239,17 @@ function runClue(){
 
         }
     }
-    
-
-    
-
 
     //ROLLS DICE FROM HTML BUTTON TO RESTRICT MOVEMENT BELOW
-    document.getElementById("rollClick").addEventListener("click", function(){moves = dice.roll();this.innerHTML=moves;pathIndex=[]})
+    let rolled = false
+    document.getElementById("rollClick").addEventListener("click", function(){
+        if(!rolled){moves = dice.roll(3,40);this.innerHTML=moves;pathIndex = [];rolled = true}})
 
     
 
     let pathIndex = []                    
-    document.addEventListener("keydown",function(event){        
-        /*if(event.key ==' '){VESTIGIAL ROLL LISTENER
-            event.preventDefault()
-            moves = dice.roll()
-            console.log(moves)
-            pathIndex = []
-        }*/
+    document.addEventListener("keydown",function(event){
+        event.preventDefault()
         
         //CLEARS THE MARKED DOTTED PATHS          !!!!!! THIS SHOULD ALSO DETERMINE GAME STATE AFTER FINISHING MOVE!!!!!!
         if(event.key == 'Enter'){
@@ -242,19 +258,27 @@ function runClue(){
             for(let i=0;i<y;i++){
                 pathArray[0].classList.remove("path")//act on available element from a shrinking array
             }
+            
+            let c = game.curChar
+            if(game.space[c.x][c.y].room){
+                c.getRoom(game)
+                guessBoard(c,char,game)
+            }
             game.curChar.marker.classList.remove("current")
-            game.currentChar("")
+
+        //alert("It is " + game.curChar.name + "'s turn.")
+        //alert("Your cards are " + game.curChar.hand)
         }
 
             //EVENT LISTENER: CHARACTER MOVEMENT ON KEYDOWN
-        c = game.curChar
+        let c = game.curChar
         if(moves >= 0){
             game.space[c.x][c.y].occupied = false
-            
+
             //UGGHHHH I SHOULD HAVE MADE THIS A FUNCTION... MAYBE
             if(event.key == 'ArrowLeft' && game.space[c.x-1][c.y].occupied == false
-            && !(game.space[c.x-1][c.y].room == true && game.space[c.x][c.y].door == false)
-            && !(game.space[c.x-1][c.y].door == false && game.space[c.x][c.y].room == true)){
+            && !(game.space[c.x-1][c.y].room && game.space[c.x][c.y].door == false)
+            && !(game.space[c.x-1][c.y].door == false && game.space[c.x][c.y].room)){
                 game.space[c.x][c.y].tile.classList.add("path")
                 if(pathIndex.length == 0){
                     console.log(pathIndex)
@@ -288,8 +312,8 @@ function runClue(){
                 }
             }
             if(event.key == 'ArrowRight' && game.space[c.x+1][c.y].occupied == false &&
-            !(game.space[c.x+1][c.y].room == true && game.space[c.x][c.y].door == false)
-            && !(game.space[c.x+1][c.y].door == false && game.space[c.x][c.y].room == true)){
+            !(game.space[c.x+1][c.y].room && game.space[c.x][c.y].door == false)
+            && !(game.space[c.x+1][c.y].door == false && game.space[c.x][c.y].room)){
                 game.space[c.x][c.y].tile.classList.add("path")
                 if(pathIndex.length == 0){
                     console.log(pathIndex)
@@ -324,8 +348,8 @@ function runClue(){
                 }
             }
             if(event.key == 'ArrowUp' && game.space[c.x][c.y-1].occupied == false &&
-            !(game.space[c.x][c.y-1].room == true && game.space[c.x][c.y].door == false)
-            && !(game.space[c.x][c.y-1].door == false && game.space[c.x][c.y].room == true)){
+            !(game.space[c.x][c.y-1].room && game.space[c.x][c.y].door == false)
+            && !(game.space[c.x][c.y-1].door == false && game.space[c.x][c.y].room)){
                 game.space[c.x][c.y].tile.classList.add("path")
                 if(pathIndex.length == 0){
                     console.log(pathIndex)
@@ -359,8 +383,8 @@ function runClue(){
                 }
             }
             if(event.key == 'ArrowDown' && game.space[c.x][c.y+1].occupied == false &&
-            !(game.space[c.x][c.y+1].room == true && game.space[c.x][c.y].door == false)
-            && !(game.space[c.x][c.y+1].door == false && game.space[c.x][c.y].room == true)){
+            !(game.space[c.x][c.y+1].room && game.space[c.x][c.y].door == false)
+            && !(game.space[c.x][c.y+1].door == false && game.space[c.x][c.y].room)){
                 game.space[c.x][c.y].tile.classList.add("path")
                 if(pathIndex.length == 0){
                     console.log(pathIndex)
@@ -399,11 +423,6 @@ function runClue(){
     })
 }
 
-//RESIZES INPUT AREA TO FIT PLACEHOLDER
-function characterSelector(){
-    input = document.getElementById("characterSelector")
-    input.setAttribute('size', input.getAttribute('placeholder').length)    
-}
 //ON-CLICK DISPLAYS CHARACTER OPTIONIS
 function characterDisplay(){
     list = document.getElementById("characterList")
@@ -411,24 +430,114 @@ function characterDisplay(){
     for(i=0;i<suspectList.length;i++){
         let x = document.createElement("li")
         x.innerHTML = suspectList[i]
-        x.setAttribute("class", "li "+i)
+        x.classList.add(x.innerHTML.replace(" ","").replace(".",""))
         list.appendChild(x)
+        x.onclick = function(){if(this.classList.contains("picked")){this.classList.remove("picked")}else{this.classList.add("picked")}}
     }
 }
-//THIS IS UPDATING TOO QUICKLY (THE X.LENGTH CHANGES WHEN IT IS DELETING <LI> ELEMENTS)
-function characterUpdate(){
-    characterDisplay()
-    let list = document.getElementById("characterList")
-    let delArray = []
-    let y = document.getElementById("characterSelector").value
-    let x = document.getElementsByClassName("li")
-    for(j=0;j<x.length;j++){
-        if(x[j].innerHTML.toLowerCase().includes(y.toLowerCase())){
-            
-            console.log(x[j].innerHTML,"match",j)
-        }
-        else{
-            delArray.push(x[j.innerHTML])
-        }
-    }
+
+function clearBoard(){
+    document.getElementById('userInterface').remove()
 }
+
+function guessBoard(c,char,game){
+    let interface = document.createElement('div')
+    interface.id = "userInterface"
+    interface.innerHTML = "Make your Guess!"
+    
+    let y = document.createElement("ul")
+    y.classList.add("guess")
+    interface.appendChild(y)
+    for(let i=0;i<suspectList.length;i++){
+        let x = document.createElement('input')
+        let l = document.createElement('label')
+        l.for = suspectList[i].replace(" ","").replace(".","")
+        l.innerHTML = suspectList[i]
+        x.type = "radio"
+        x.checked = false
+        x.id = suspectList[i].replace(" ","").replace(".","")
+        x.value = suspectList[i].replace(" ","").replace(".","")
+        x.name = "suspect"
+        y.appendChild(x)
+        y.appendChild(l)
+    }
+    y = document.createElement("ul")
+    y.classList.add("guess")
+    interface.appendChild(y)
+    for(let i=0;i<weaponList.length;i++){
+        let x = document.createElement('input')
+        let l = document.createElement('label')
+        l.for = weaponList[i].replace(" ","").replace(".","")
+        l.innerHTML = weaponList[i]
+        x.type = "radio"
+        x.checked = false
+        x.id = weaponList[i].replace(" ","").replace(".","")
+        x.value = weaponList[i].replace(" ","").replace(".","")
+        x.name = "weapon"
+        y.appendChild(x)
+        y.appendChild(l)
+    }
+    y = document.createElement("ul")
+    y.classList.add("guess")
+    interface.appendChild(y)
+
+        let x = document.createElement('input')
+        let l = document.createElement('label')
+        l.for = c.room.replace(" ","").replace(".","")
+        l.innerHTML = c.room
+        x.type = "radio"
+        x.checked = false
+        x.id = c.room.replace(" ","").replace(".","")
+        x.value = c.room.replace(" ","").replace(".","")
+        x.name = "room"
+        y.appendChild(x)
+        y.appendChild(l)
+
+    
+    let button = document.createElement("button")
+    button.innerHTML = "Submit Guess"
+    
+    button.onclick = function() {let checkList = check(interface);
+        let matchList = []
+        for(let i=0;i<char.length;i++){
+            for(let j=0;j<char[i].hand.length;j++){
+                for(let k=0;k<checkList.length;k++){
+                    if(checkList[k] == char[i].hand[j].replace(" ","").replace(".",""))
+                        matchList.push([char[i].name,char[i].hand[j]])
+                }
+            }
+        }
+        let rand = Math.floor(Math.random()*matchList.length)
+        alert(c.name)
+        alert(matchList[rand][0] + " reveals the " + matchList[rand][1] + " card.")
+        interface.remove()
+    }
+    document.body.appendChild(interface)
+    interface.appendChild(button)
+}
+
+function check(interface){
+    let x = []
+    let y = []
+    x = interface.getElementsByTagName("input")
+    for(let i=0;i<x.length;i++){
+        if(x[i].checked)
+            y.push(x[i].value)
+    }
+    console.log(y)
+    return(y)
+}
+
+/*for(let i=0;i<roomList.length;i++){
+    let x = document.createElement('input')
+    let l = document.createElement('label')
+    l.for = roomList[i].replace(" ","").replace(".","")
+    l.innerHTML = roomList[i]
+    x.type = "radio"
+    x.checked = false
+    x.id = roomList[i].replace(" ","").replace(".","")
+    x.value = roomList[i].replace(" ","").replace(".","")
+    x.name = "room"
+    y.appendChild(x)
+    y.appendChild(l)
+}*/
