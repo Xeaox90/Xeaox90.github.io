@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clue Digital Board Game</title>
+    <link rel="stylesheet" href="Clue.css">
+</head>
+<body>
+    <svg id="gameBoard" width=1440 height=1440>
+    </svg>
+    
+    <div id="userInterface">
+        <div id="characterSelector"  onpointerover="characterDisplay()" style="font-size: large;">Which players would you like to play?</div>
+        <ul id="characterList" style="font-size: large;">
+        </ul>
+        <button onclick="runClue();">Click Here to Start</button>
+    </div>
+
+    <button id="rollClick">Click me to Roll</button>    
+    
+    <script src="Clue.js" ></script>
+
+    <div id="partyButton" onclick="  let x = getElementById('sound');if(x.paused){x.play()}else{x.pause()};
+                    let y = getElementById('gameBoard');if(y.classList.contains('party')){y.classList.remove('party')}else{y.classList.add('party')}">
+        PARTY MODE
+        <audio id="sound" hidden controls preload="auto" loop title="CHECK YOUR VOLUME">
+            <source src="Tranceport.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    CHECK YOUR VOLUME
+</body>
+</html>
