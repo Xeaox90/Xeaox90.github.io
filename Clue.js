@@ -1,3 +1,9 @@
+/*import * as Clue from "./clueJava.js"
+
+Clue.run(3) THIS IS PETTY BS*/
+
+//import { run } from "./clueJava"
+
 class Dice{//only one find 3d elements in svg
     visible = false
     total = 0
@@ -152,8 +158,15 @@ function runClue(){
         
         game.space[char[x].x][char[x].y].occupied = true        
     }
+    let final = new Character
+    final.draw(suspectDeck)
+    final.draw(weaponDeck)
+    final.draw(roomDeck)
+    
     clearBoard() //LEAVE UNTIL CHARACTER SELECTION IS FINISHED
     //ESTABLISH STARTING CHARACTERS
+    let accusation = document.getElementById("accuse")
+    accusation.onclick = function() {accuse(final,game,char)}
 
     game.turnIndex = Math.floor(Math.random()*char.length)
 
@@ -546,10 +559,10 @@ function check(interface){
     return(y)
 }
 
-function accuse(){
+function accuse(final,game,char){
     let interface = document.createElement('div')
     interface.id = "userInterface"
-    interface.innerHTML = "Make your Guess!"
+    interface.innerHTML = "Make your Accusation!"
     
     let y = document.createElement("ul")
     y.classList.add("guess")
@@ -586,40 +599,50 @@ function accuse(){
     y = document.createElement("ul")
     y.classList.add("guess")
     interface.appendChild(y)
-
+    for(let i=0;i<roomList.length;i++){
         let x = document.createElement('input')
         let l = document.createElement('label')
-        l.for = c.room.replace(" ","").replace(".","")
-        l.innerHTML = c.room
+        l.for = roomList[i].replace(" ","").replace(".","")
+        l.innerHTML = roomList[i]
         x.type = "radio"
         x.checked = false
-        x.id = c.room.replace(" ","").replace(".","")
-        x.value = c.room.replace(" ","").replace(".","")
+        x.id = roomList[i].replace(" ","").replace(".","")
+        x.value = roomList[i].replace(" ","").replace(".","")
         x.name = "room"
         y.appendChild(x)
         y.appendChild(l)
+    }
 
     
     let button = document.createElement("button")
-    button.innerHTML = "Submit Guess"
+    button.innerHTML = "Submit Accusation"
     
-    button.onclick = function() {let checkList = check(interface);
+    button.onclick = function() {let checkList = check(interface);   
         let matchList = []
-        for(let i=0;i<char.length;i++){
-            for(let j=0;j<char[i].hand.length;j++){
+        for(let j=0;j<final.hand.length;j++){
                 for(let k=0;k<checkList.length;k++){
-                    if(checkList[k] == char[i].hand[j].replace(" ","").replace(".",""))
-                        matchList.push([char[i].name,char[i].hand[j]])
+                    if(checkList[k] == final.hand[j].replace(" ","").replace(".",""))
+                        matchList.push(final.hand[j])
                 }
             }
+        alert(game.curChar.name)
+        if(matchList.length == 3){
+            alert("You Win! Congratulations!")
+            window.setTimeout(location.reload,5000)
         }
-        let rand = Math.floor(Math.random()*matchList.length)
-        alert(c.name)
-        if(matchList.length != 0)
-            alert(matchList[rand][0] + " reveals the " + matchList[rand][1] + " card.")
-        else
-            alert("No cards to reaveal, but don't forget there are some in the deck.")
+        else{
+            alert("Sorry " + game.curChar.name + ", that is incorrect.")
+            alert("Goodbye")
+            for(let i=0;i<char.length;i++){
+                if (char[i] == game.curChar){
+                    game.curChar.marker.remove()
+                    char.splice(i,1)
+                }
+            }
+            game.turnIndex--
+        }
         interface.remove()
+        
         if(game.turnIndex == char.length-1)
             game.turnIndex = 0
         else
